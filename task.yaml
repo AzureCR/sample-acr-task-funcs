@@ -1,0 +1,18 @@
+version: v1.0.0
+
+steps:
+  - id: addEmUp
+    run: build -t {{.Build.Registry}}/functions/addemup:latest -t {{.Build.Registry}}/functions/addemup:{{.Build.ID}} ./addEmUp/
+    when: ['-']
+  - id: calc
+    run: build -t {{.Build.Registry}}/functions/calc:latest -t {{.Build.Registry}}/functions/calc:{{.Build.ID}} ./calc/
+    when: ['-']
+  - id: echo
+    run: build -t {{.Build.Registry}}/functions/echo:latest -t {{.Build.Registry}}/functions/echo:{{.Build.ID}} ./echo/
+    when: ['-']
+  - id: ping
+    run: build -t {{.Build.Registry}}/functions/ping:latest -t {{.Build.Registry}}/functions/ping:{{.Build.ID}} ./ping/
+    when: ['-']
+  - run: docker images
+    when: ['addEmUp', 'calc', 'echo', 'ping']
+  - run: {{.Build.Registry}}/functions/ping localhost
